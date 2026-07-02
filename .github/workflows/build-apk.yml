@@ -17,6 +17,7 @@ jobs:
           java-version: "17"
       - uses: android-actions/setup-android@v3
       - run: npm install
+      - run: npm install @capacitor/cli @capacitor/core @capacitor/android
       - run: echo "{}" > .z-ai-config
       - run: npm run build
         env:
