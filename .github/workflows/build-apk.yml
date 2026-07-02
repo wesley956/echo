@@ -25,6 +25,7 @@ jobs:
       - run: echo '{"appId":"com.echo.wuxiabrasileirado","appName":"ECHO","webDir":"out","server":{"androidScheme":"https"}}' > capacitor.config.json
       - run: npx cap add android
       - run: npx cap sync android
+      - run: node -e 'require("fs").appendFileSync("android/build.gradle","\nsubprojects{\n  configurations.all{\n    exclude group:\"org.jetbrains.kotlin\",module:\"kotlin-stdlib-jdk7\"\n    exclude group:\"org.jetbrains.kotlin\",module:\"kotlin-stdlib-jdk8\"\n  }\n}\n")'
       - run: cd android && ./gradlew assembleDebug
       - run: find android/app/build/outputs/ -type f
       - uses: actions/upload-artifact@v4
