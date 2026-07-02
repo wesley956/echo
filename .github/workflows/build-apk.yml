@@ -22,6 +22,7 @@ jobs:
       - run: npm run build
         env:
           NEXT_TELEMETRY_DISABLED: "1"
+      - run: echo '{"appId":"com.echo.wuxiabrasileirado","appName":"ECHO","webDir":"out","server":{"androidScheme":"https"}}' > capacitor.config.json
       - run: npx cap add android
       - run: npx cap sync android
       - run: cd android && ./gradlew assembleDebug
