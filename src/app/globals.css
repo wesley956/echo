@@ -1,0 +1,334 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   ECHO — Wuxia-Brasileirado Design System
+   Tinta nanquim + selos vermelhos + jade + cobre + ouro
+   Cultivo do coração (修心) encontrado com a alma brasileira
+   ============================================================ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-cormorant);
+  --font-brush: var(--font-ma-shan);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* ECHO custom semantic tokens */
+  --color-jade: var(--jade);
+  --color-copper: var(--copper);
+  --color-vermillion: var(--vermillion);
+  --color-gold: var(--gold);
+  --color-mist: var(--mist);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 10px);
+}
+
+:root {
+  --radius: 1rem;
+  /* Wuxia-Brasileirado — dark is the canonical mode */
+  --background: #08080F;
+  --foreground: #F4F1EA;
+  --card: #12121E;
+  --card-foreground: #F4F1EA;
+  --popover: #12121E;
+  --popover-foreground: #F4F1EA;
+  --primary: #4A9D7C;            /* jade — cultivation path */
+  --primary-foreground: #06140E;
+  --secondary: #C8895A;          /* copper — Brazilian earth */
+  --secondary-foreground: #1A0F08;
+  --accent: #D4B062;             /* gold — orixá prosperity */
+  --accent-foreground: #1A1408;
+  --destructive: #C84B3F;        /* vermillion — wuxia seal */
+  --muted: #1B1B29;
+  --muted-foreground: #9A9AB0;
+  --border: rgba(244, 241, 234, 0.08);
+  --input: rgba(244, 241, 234, 0.10);
+  --ring: #4A9D7C;
+  --jade: #4A9D7C;
+  --jade-soft: #6FB89A;
+  --copper: #C8895A;
+  --copper-soft: #E0A574;
+  --vermillion: #C84B3F;
+  --gold: #D4B062;
+  --gold-soft: #E8CD8A;
+  --mist: #5B7BA6;
+  --ink: #0A0A14;
+  --paper: #F4F1EA;
+  --chart-1: #4A9D7C;
+  --chart-2: #C8895A;
+  --chart-3: #C84B3F;
+  --chart-4: #D4B062;
+  --chart-5: #5B7BA6;
+  --sidebar: #0E0E18;
+  --sidebar-foreground: #F4F1EA;
+  --sidebar-primary: #4A9D7C;
+  --sidebar-primary-foreground: #06140E;
+  --sidebar-accent: #1B1B29;
+  --sidebar-accent-foreground: #F4F1EA;
+  --sidebar-border: rgba(244, 241, 234, 0.08);
+  --sidebar-ring: #4A9D7C;
+}
+
+/* Light "paper scroll" mode — aged parchment with ink */
+.light {
+  --background: #F4F1EA;
+  --foreground: #1A1A28;
+  --card: #FBF8F0;
+  --card-foreground: #1A1A28;
+  --popover: #FBF8F0;
+  --popover-foreground: #1A1A28;
+  --primary: #2D7A5F;
+  --primary-foreground: #F4F1EA;
+  --secondary: #A06A3E;
+  --secondary-foreground: #F4F1EA;
+  --accent: #B8923F;
+  --accent-foreground: #1A1A28;
+  --destructive: #A8362C;
+  --muted: #E8E2D4;
+  --muted-foreground: #6B6857;
+  --border: rgba(26, 26, 40, 0.10);
+  --input: rgba(26, 26, 40, 0.12);
+  --ring: #2D7A5F;
+  --jade: #2D7A5F;
+  --copper: #A06A3E;
+  --vermillion: #A8362C;
+  --gold: #B8923F;
+  --mist: #4A6A8E;
+  --ink: #1A1A28;
+  --paper: #F4F1EA;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body {
+    @apply bg-background text-foreground;
+  }
+  body {
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Custom scrollbar — ink brush */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(74,157,124,0.4), rgba(200,137,90,0.4));
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(74,157,124,0.7), rgba(200,137,90,0.7));
+  }
+  ::selection {
+    background: rgba(200, 75, 63, 0.35);
+    color: #F4F1EA;
+  }
+}
+
+/* ============================================================
+   Wuxia-Brasileirado Utilities
+   ============================================================ */
+
+/* Ink wash background — layered radial gradients evoking misty mountains */
+.echo-ink-bg {
+  background-color: #08080F;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(74,157,124,0.12), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 10%, rgba(212,176,98,0.08), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 0% 100%, rgba(200,75,63,0.07), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 50% 120%, rgba(91,123,166,0.10), transparent 60%);
+}
+
+/* Paper grain texture for light mode */
+.echo-paper-bg {
+  background-color: #F4F1EA;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(160,106,62,0.05) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(184,146,63,0.05) 0%, transparent 40%);
+}
+
+/* Gold filigree border */
+.echo-filigree {
+  position: relative;
+}
+.echo-filigree::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(212,176,98,0.5), rgba(74,157,124,0.2), rgba(200,137,90,0.4), rgba(212,176,98,0.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Seal stamp — vermillion square with brush character */
+.echo-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #C84B3F, #A8362C);
+  color: #F4F1EA;
+  font-family: var(--font-ma-shan), serif;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(244,241,234,0.15) inset, 0 2px 8px rgba(200,75,63,0.35);
+  letter-spacing: 0;
+}
+
+/* Glow ring for active states */
+.echo-glow-jade {
+  box-shadow: 0 0 0 1px rgba(74,157,124,0.4), 0 0 24px -4px rgba(74,157,124,0.45);
+}
+.echo-glow-copper {
+  box-shadow: 0 0 0 1px rgba(200,137,90,0.4), 0 0 24px -4px rgba(200,137,90,0.45);
+}
+.echo-glow-vermillion {
+  box-shadow: 0 0 0 1px rgba(200,75,63,0.45), 0 0 24px -4px rgba(200,75,63,0.5);
+}
+.echo-glow-gold {
+  box-shadow: 0 0 0 1px rgba(212,176,98,0.45), 0 0 28px -4px rgba(212,176,98,0.5);
+}
+
+/* Brush text — Ma Shan Zheng calligraphy */
+.echo-brush {
+  font-family: var(--font-ma-shan), "Cormorant Garamond", serif;
+}
+.echo-display {
+  font-family: var(--font-cormorant), Georgia, serif;
+  letter-spacing: -0.01em;
+}
+
+/* Ink divider with brush stroke */
+.echo-ink-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,176,98,0.4) 20%, rgba(200,137,90,0.5) 50%, rgba(212,176,98,0.4) 80%, transparent);
+}
+
+/* Mountain mist layered shapes */
+.echo-mountain {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Animated breathing ring */
+@keyframes echo-breathe {
+  0%, 100% { transform: scale(0.85); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+.echo-breathe {
+  animation: echo-breathe 8s ease-in-out infinite;
+}
+
+/* Typing dots */
+@keyframes echo-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+.echo-dot {
+  animation: echo-dot 1.4s ease-in-out infinite;
+}
+
+/* Soft fade-in slide-up */
+@keyframes echo-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.echo-rise {
+  animation: echo-rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Shimmer for gold text */
+@keyframes echo-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.echo-shimmer-gold {
+  background: linear-gradient(90deg, #C8895A 0%, #D4B062 25%, #F0DC9C 50%, #D4B062 75%, #C8895A 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: echo-shimmer 6s linear infinite;
+}
+
+/* Ink drop ripple */
+@keyframes echo-ripple {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.echo-ripple {
+  animation: echo-ripple 2s ease-out infinite;
+}
+
+/* Voice waveform bars */
+@keyframes echo-wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* Glass card */
+.echo-glass {
+  background: rgba(18, 18, 30, 0.55);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+.light .echo-glass {
+  background: rgba(251, 248, 240, 0.65);
+}
+
+/* Hide scrollbar but keep scroll */
+.echo-no-scrollbar::-webkit-scrollbar { display: none; }
+.echo-no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Safe area bottom padding for nav */
+.echo-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

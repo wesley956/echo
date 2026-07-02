@@ -1,0 +1,352 @@
+Crie a estrutura completa de um projeto Flutter para um aplicativo chamado ECHO — um assistente de inteligência emocional. 
+
+Configure:
+- pubspec.yaml com todas as dependências necessárias: supabase_flutter, flutter_riverpod, go_router, http, shared_preferences, flutter_tts, speech_to_text, fl_chart, firebase_messaging, firebase_analytics, firebase_crashlytics, intl, lottie, flutter_secure_storage
+- Estrutura de pastas seguindo Clean Architecture: lib/core/, lib/features/, lib/shared/
+- Dentro de lib/features/ crie as subpastas: auth/, chat/, diary/, insights/, profile/, goals/, settings/
+- Cada feature deve ter: data/, domain/, presentation/
+- lib/core/ deve ter: constants/, theme/, router/, services/, utils/
+- main.dart com inicialização do Supabase, Firebase e Riverpod
+- app.dart com MaterialApp e GoRouter
+- constants.dart com todas as constantes do app (strings, cores, tamanhos)
+
+Retorne todos os arquivos com o código completo.
+
+Crie o design system completo do app ECHO em Flutter.
+
+O ECHO é um app de inteligência emocional com personalidade: empático, sincero e corajoso. O visual deve transmitir calma, profundidade e confiança — não infantil, não clínico.
+
+Crie lib/core/theme/app_theme.dart com:
+- Paleta de cores: fundo escuro (#0D0D14), primária (#7C6CF0 roxo suave), secundária (#2D9CDB azul), acentuação emocional (#F2994A laranja), texto primário (#FFFFFF), texto secundário (#A0A0B8)
+- Tipografia usando Google Fonts (DM Sans para corpo, DM Serif Display para títulos)
+- ThemeData completo para modo escuro (modo padrão) e modo claro
+- Componentes: EchoButton, EchoCard, EchoInput, EchoChip
+- Animações de transição suaves entre telas (300ms, curva easeInOut)
+- BorderRadius padrão de 16px
+
+Retorne o arquivo completo.
+
+Crie o schema SQL completo para o banco PostgreSQL no Supabase do app ECHO.
+
+Tabelas necessárias:
+
+1. profiles — dados do usuário (id, user_id, name, avatar_url, created_at, premium_until)
+2. conversations — sessões de chat (id, user_id, title, mode [apoio/equilibrio/confronto], started_at, ended_at, summary)
+3. messages — mensagens individuais (id, conversation_id, role [user/assistant], content, created_at, emotional_tags[])
+4. diary_entries — entradas do diário (id, user_id, date, mood_score [1-5], energy, anxiety, sleep, stress, motivation, note, created_at)
+5. emotional_patterns — padrões detectados pela IA (id, user_id, pattern_type, description, first_detected, last_seen, frequency, severity)
+6. goals — metas do usuário (id, user_id, title, description, target_date, status, created_at)
+7. daily_checkins — check-ins diários (id, user_id, date, slept_well, had_crisis, had_conflict, studied, ate_well, notes)
+8. insights — insights automáticos (id, user_id, content, type, generated_at, dismissed)
+
+Para cada tabela:
+- Defina tipos corretos e constraints
+- Crie índices nos campos mais consultados
+- Escreva as Row Level Security policies para que usuários acessem apenas seus próprios dados
+- Crie funções auxiliares: get_weekly_mood_average(user_id), get_emotional_patterns_summary(user_id)
+
+Retorne o SQL completo pronto para executar no Supabase.
+
+Crie o sistema de autenticação completo do ECHO em Flutter com Supabase.
+
+Crie os seguintes arquivos:
+
+1. lib/features/auth/data/auth_repository.dart
+   - signUpWithEmail(email, password, name)
+   - signInWithEmail(email, password)
+   - signInWithGoogle()
+   - signOut()
+   - getCurrentUser()
+   - Stream<AuthState> authStateChanges
+
+2. lib/features/auth/presentation/screens/splash_screen.dart
+   - Animação do logo ECHO (3 segundos)
+   - Redireciona para home se autenticado, onboarding se não
+
+3. lib/features/auth/presentation/screens/onboarding_screen.dart
+   - 4 slides explicando o ECHO
+   - Slide 1: "Sua consciência quando você não consegue ouvir a si mesmo"
+   - Slide 2: Como funciona
+   - Slide 3: Modos de conversa
+   - Slide 4: Privacidade
+   - Botão "Começar"
+
+4. lib/features/auth/presentation/screens/login_screen.dart
+   - Email + senha
+   - Login com Google
+   - Link para cadastro
+
+5. lib/features/auth/presentation/screens/register_screen.dart
+   - Nome + email + senha
+   - Aceite dos termos
+
+Use Riverpod para gerenciamento de estado. Trate todos os erros com mensagens amigáveis.
+
+Crie o sistema de prompts do ECHO — um assistente de inteligência emocional em português brasileiro.
+
+Crie lib/core/services/echo_ai_service.dart com:
+
+1. Um system prompt base que define a personalidade do ECHO:
+   - Empático: entende a dor antes de responder, nunca diminui sentimentos
+   - Sincero: não inventa esperança, fala o que acredita ser mais útil
+   - Inteligente: analisa padrões, conecta acontecimentos
+   - Corajoso: confronta quando necessário, faz perguntas difíceis
+
+2. Três variantes do system prompt por modo:
+   - MODO APOIO: mais acolhedor, gentil, indicado após momentos difíceis
+   - MODO EQUILÍBRIO: combinação dos outros (padrão)
+   - MODO CONFRONTO: mais firme, perguntas difíceis, sem agressividade
+   
+3. O ECHO NUNCA usa frases robóticas como "Entendo como você se sente". 
+   Em vez disso usa frases como "Você parece estar tentando convencer a si mesmo de algo que nem você acredita."
+
+4. Função buildContextualPrompt(userProfile, recentConversations, emotionalPatterns) que injeta o histórico emocional do usuário no context
+
+5. Função sendMessage(message, conversationHistory, mode, userContext) que:
+   - Monta o prompt completo
+   - Chama a API da OpenAI (GPT-4)
+   - Retorna a resposta em stream
+   - Extrai tags emocionais da mensagem automaticamente (usar função separada)
+
+6. Função extractEmotionalTags(message) que identifica emoções como: ansiedade, tristeza, raiva, medo, alegria, confusão, etc.
+
+7. Sistema de memória: função buildMemoryContext(userId) que busca do Supabase os padrões emocionais, últimas conversas e perfil do usuário
+
+O ECHO jamais: manipula, cria dependência emocional, incentiva isolamento, promete cura. Se houver sinais de risco à integridade do usuário, sempre indicar ajuda profissional.
+
+Retorne o código completo.
+
+Crie o sistema de memória emocional do ECHO em Flutter/Dart.
+
+Crie lib/core/services/memory_service.dart com:
+
+1. Quatro tipos de memória:
+   - Memória curta: últimas 10 mensagens da conversa atual
+   - Memória longa: resumos das últimas 30 conversas
+   - Memória emocional: padrões identificados (ansiedade recorrente, medo de abandono, etc.)
+   - Memória contextual: acontecimentos importantes mencionados pelo usuário
+
+2. Função analyzeConversationForPatterns(conversationId) que após uma conversa:
+   - Identifica padrões emocionais novos ou recorrentes
+   - Gera um resumo da conversa em 3 frases
+   - Salva tudo no Supabase
+
+3. Função generateInsights(userId) que semanalmente:
+   - Analisa as conversas da semana
+   - Gera insights automáticos como:
+     "Você costuma ficar triste aos domingos"
+     "Percebi que sempre cita seu trabalho quando fala sobre ansiedade"
+   - Salva na tabela insights
+
+4. Função buildEmotionalProfile(userId) que retorna:
+   - Fortalezas detectadas (ex: persistência, empatia)
+   - Desafios recorrentes (ex: ansiedade, autocrítica)
+   - Gatilhos identificados
+   - Horários críticos
+   - Emoções predominantes
+
+Integrar com Supabase para persistência. Retorne o código completo.
+
+Crie a tela de chat do ECHO — a tela mais importante do app.
+
+Crie lib/features/chat/presentation/screens/chat_screen.dart com:
+
+1. AppBar:
+   - Nome "ECHO" centralizado com fonte DM Serif Display
+   - Botão de modo (Apoio / Equilíbrio / Confronto) à direita com ícone
+   - Indicador de modo atual com cor (azul=apoio, roxo=equilíbrio, laranja=confronto)
+
+2. Lista de mensagens:
+   - Bolhas de mensagem com animação de entrada (fadeIn + slideUp)
+   - Mensagens do usuário: alinhadas à direita, cor primária
+   - Mensagens do ECHO: alinhadas à esquerda, fundo card
+   - Indicador de digitação (três pontos animados) enquanto IA processa
+   - Scroll automático para a mensagem mais recente
+
+3. Campo de input:
+   - TextField com border radius 24px
+   - Botão de microfone para entrada por voz
+   - Botão de enviar que ativa apenas quando há texto
+   - Suporte a mensagens longas (expansível)
+
+4. Widget EchoTypingIndicator com animação de três pontos pulsando
+
+5. Widget MessageBubble com:
+   - Texto da mensagem
+   - Timestamp
+   - Tags emocionais detectadas (chips pequenos, opcionais, ativáveis por long press)
+
+6. Estado gerenciado com Riverpod:
+   - ChatState com: messages, isLoading, currentMode, conversationId
+   - ChatNotifier com: sendMessage, changeMode, startNewConversation
+
+7. Integração com EchoAiService para envio/recebimento de mensagens em stream (exibir tokens conforme chegam)
+
+Use o design system do ECHO. Retorne o código completo.
+
+Crie duas telas do ECHO:
+
+TELA 1 — Home (lib/features/chat/presentation/screens/home_screen.dart):
+- Saudação personalizada ("Bom dia, [nome]. Como você está hoje?")
+- Check-in de humor do dia com 5 emojis selecionáveis: 😊 Excelente, 🙂 Bem, 😐 Neutro, 🙁 Mal, 😢 Muito mal
+- Card de acesso rápido ao chat com frase inspiradora dinâmica do ECHO
+- Card de insight do dia (último insight gerado)
+- Card de meta atual com progresso
+- Notificação sutil se o usuário não entrou há 2+ dias
+
+TELA 2 — Diário Emocional (lib/features/diary/presentation/screens/diary_screen.dart):
+- Cabeçalho com semana atual e navegação anterior/próxima
+- Mini calendário com indicador de humor por dia (bolinha colorida)
+- Ao tocar no dia: abre um bottom sheet com:
+  - Slider de humor (1-5)
+  - Sliders de: ansiedade, energia, sono, estresse, motivação (0-10 cada)
+  - Campo de texto livre "O que aconteceu hoje?"
+  - Botão salvar
+- Gráfico de linha mostrando evolução do humor nos últimos 14 dias (usar fl_chart)
+- Lista de entradas recentes com preview do texto
+
+Use Riverpod para estado. Salvar e buscar dados do Supabase. Retorne o código completo.
+
+Crie as telas restantes do ECHO e a navegação principal:
+
+TELA 1 — Insights (lib/features/insights/presentation/screens/insights_screen.dart):
+- Lista de insights automáticos gerados pela IA
+- Cada insight: ícone contextual, texto, data, botão "dispensar"
+- Gráficos de evolução: humor, ansiedade, energia, sono (últimas 4 semanas)
+- Seção "Seus padrões" com chips das emoções mais frequentes
+- Linha do tempo emocional: scroll horizontal pelo histórico dos últimos meses
+
+TELA 2 — Perfil Emocional (lib/features/profile/presentation/screens/profile_screen.dart):
+- Avatar + nome + tempo de uso do app
+- Painel "Fortalezas": lista com ícones (persistência, empatia, etc.)
+- Painel "Desafios": lista com indicador de frequência
+- Radar chart com as 6 dimensões: relacionamentos, família, carreira, saúde, autoestima, espiritualidade
+- Botão "Exportar relatório" (premium)
+
+TELA 3 — Metas (lib/features/goals/presentation/screens/goals_screen.dart):
+- Lista de metas ativas com progresso
+- Botão adicionar meta com IA sugerindo metas baseadas no perfil emocional
+- Cada meta: título, prazo, status, notas
+
+NAVEGAÇÃO — lib/core/router/app_router.dart:
+- BottomNavigationBar com 5 abas: Home, Chat, Diário, Insights, Perfil
+- GoRouter configurado com todas as rotas
+- Transições suaves entre telas
+- Proteção de rotas autenticadas
+
+Retorne o código completo de todos os arquivos.
+
+Adicione funcionalidade de voz completa ao ECHO.
+
+Crie lib/core/services/voice_service.dart com:
+
+1. Speech-to-Text:
+   - Inicializar microfone com permissões
+   - Função startListening() que ativa o microfone
+   - Função stopListening() que retorna o texto transcrito
+   - Indicador visual de amplitude enquanto escuta
+   - Tratamento de erros (sem permissão, sem microfone)
+
+2. Text-to-Speech:
+   - Função speak(text) que lê a resposta do ECHO
+   - Configuração de voz: português brasileiro, tom levemente mais grave (confiança), velocidade moderada
+   - Função stop() para interromper
+   - Função pause() e resume()
+
+3. Modo conversa por voz:
+   - Tela VoiceChatScreen com interface limpa (microfone central animado)
+   - Loop: usuário fala → transcreve → envia para IA → IA responde → TTS lê → aguarda usuário
+   - Visualizador de ondas de áudio animado (usando CustomPainter)
+   - Botão de sair do modo voz
+
+4. Widget VoiceButton para o chat principal:
+   - Ícone de microfone
+   - Ao segurar: grava
+   - Ao soltar: envia transcrição
+   - Feedback háptico
+
+Retorne o código completo.
+
+Implemente notificações inteligentes e suporte offline no ECHO.
+
+1. Notificações (lib/core/services/notification_service.dart):
+   - Integração com Firebase Cloud Messaging
+   - Notificações locais com flutter_local_notifications
+   - Sistema de notificações não-invasivas:
+     * "Você anda sumido. Como está?" (após 2 dias sem usar)
+     * "Hoje faz uma semana desde nossa última conversa" (7 dias)
+     * Check-in diário às 20h (configurável pelo usuário)
+     * Lembrete de meta (se a meta tiver prazo próximo)
+   - Respeitar horários de silêncio (configurável)
+   - Ao tocar: abre a tela relevante
+
+2. Configuração de notificações (lib/features/settings/presentation/screens/notification_settings_screen.dart):
+   - Toggle para cada tipo de notificação
+   - Seletor de horário para check-in diário
+   - Horário de não perturbar
+
+3. Cache offline (lib/core/services/cache_service.dart):
+   - Cachear últimas 20 mensagens do chat
+   - Cachear entradas do diário dos últimos 30 dias
+   - Sincronizar quando reconectar
+   - Indicador visual de modo offline
+
+Retorne o código completo.
+
+Implemente segurança e a tela de emergência do ECHO.
+
+1. Segurança (lib/core/services/security_service.dart):
+   - Criptografia dos dados locais com flutter_secure_storage
+   - Biometria para acessar o app (opcional, configurável)
+   - Modo privado: não exibir conteúdo no app switcher do iOS/Android
+   - Função deleteAllData() que apaga todos os dados locais e do Supabase
+   - Função exportHistory() que gera JSON com todo o histórico (premium)
+
+2. Tela de Emergência (lib/features/emergency/presentation/screens/emergency_screen.dart):
+   - Acessível sempre por botão fixo na tela de chat
+   - Detecção automática: se o usuário mencionar palavras de crise, ECHO sugere abrir essa tela
+   - Conteúdo:
+     * "Você não está sozinho" — mensagem acolhedora
+     * CVV: 188 (botão para ligar direto)
+     * CAPS da cidade (baseado na localização ou configurado)
+     * Contato de confiança (que o usuário configura)
+     * Técnicas de respiração (animação guiada 4-7-8)
+   - Design: calmo, cores neutras, sem sobrecarga visual
+   - NUNCA usar end_conversation se houver sinais de crise
+
+3. Sistema de detecção de crise no EchoAiService:
+   - Lista de palavras/frases de alerta
+   - Se detectado: resposta empática + sugestão da tela de emergência
+   - Log seguro do evento (sem conteúdo) para analytics
+
+Retorne o código completo.
+
+Implemente o sistema premium e prepare o ECHO para publicação.
+
+1. Premium (lib/features/subscription/):
+   - Integração com in_app_purchase (iOS e Android)
+   - Plano mensal R$ 19,90 e anual R$ 149,90
+   - Features premium: conversas ilimitadas, análises profundas, exportação PDF, voz premium, memória expandida
+   - Tela de paywall elegante mostrando benefícios
+   - Verificação de status premium no Supabase
+   - Restaurar compra
+
+2. Configurações finais (lib/features/settings/):
+   - Tema claro/escuro/sistema
+   - Tamanho de fonte
+   - Leitura por voz (ativar/desativar)
+   - Idioma
+   - Conta: alterar email, senha, excluir conta
+   - Sobre o app, Termos, Privacidade
+
+3. Preparação para lojas:
+   - AndroidManifest.xml com todas as permissões necessárias
+   - Info.plist para iOS com descrições das permissões
+   - Configuração de signing para Android (build.gradle)
+   - Configuração de bundle identifier iOS
+   - Ícones do app (forneça as especificações para gerar)
+   - Splash screen nativa (flutter_native_splash)
+   - README.md com instruções de build e configuração
+
+Retorne o código completo e as instruções de build.
+
